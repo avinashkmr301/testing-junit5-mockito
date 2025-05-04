@@ -31,12 +31,19 @@ class SpecialitySDJpaServiceTest {
     SpecialitySDJpaService service;
 
     @Test
+    void testDeleteByObject() {
+        Speciality speciality = new Speciality();
+        service.delete(speciality);
+        verify(specialtyRepository).delete(any(Speciality.class)); // any() - argument matcher
+    }
+
+    @Test
     void testFindById(){
         Speciality speciality = new Speciality();  // obj create so that in next line it will return the same.
         when(specialtyRepository.findById(1L)).thenReturn(Optional.of(speciality));
         Speciality foundSpeciality = service.findById(1L);
         assertThat(foundSpeciality).isNotNull();
-        verify(specialtyRepository).findById(1L);
+        verify(specialtyRepository).findById(anyLong()); // findById(anyLong())  == argument matcher
     }
 
     @Test
